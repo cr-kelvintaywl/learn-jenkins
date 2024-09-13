@@ -7,7 +7,7 @@ node {
     ])
 
     stage('verify') {
-        sh 'echo foobar value is $params.foobar'
+        sh "echo foobar value is ${params.foobar}"
     }
 }
 
