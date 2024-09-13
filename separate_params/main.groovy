@@ -1,6 +1,6 @@
 node {
     checkout scm
-    def params = load pwd() + '/params.groovy'
+    def params = load pwd() + '/separate_params/params.groovy'
 
     properties([
         parameters(params.all())
