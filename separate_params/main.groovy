@@ -1,4 +1,4 @@
-stage('load params') {
+node {
     checkout scm
     // NOTE: `load` is a Jenkinsfile-only construct;
     // This is not a Groovy-specific function
@@ -7,11 +7,10 @@ stage('load params') {
     properties([
         parameters(params.all())
     ])
-}
 
-node {
     stage('verify') {
         sh "echo foobar value is ${params.foobar}"
         sh "echo fizzbuzz value is ${params.fizzbuzz}"
     }
 }
+
