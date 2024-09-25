@@ -9,12 +9,17 @@ node {
             string(
                 name: 'image',
                 description: 'docker image to pull',
-            )
+            ),
+            booleanParam(
+                name: 'reload_parameters',
+                description: 'Reload job parameters from git and exit.',
+                defaultValue: true,
+            ),
         ])
     ])
 }
 
-if (currentBuild.number == 1) {
+if (params.reload_parameters) {
     currentBuild.result = 'SUCCESS'
     currentBuild.displayName = 'Load Params'
     // exit early
