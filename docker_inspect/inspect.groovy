@@ -31,9 +31,10 @@ node(params.node) {
         sh 'docker info'
         sh 'which jq'
         sh 'jq . /etc/docker/daemon.json || echo "cannot find daemon config JSON"'
-        sh 'echo "Docker CLI config is at: ${DOCKER_CONFIG}"'
+        sh 'jq . ~/.docker/config.json || echo "cannot find CLI config JSON"'
     }
     stage('Docker pull') {
         sh "docker pull ${params.image}"
+        sh 'docker image ls'
     }
 }
