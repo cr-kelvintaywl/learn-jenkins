@@ -1,6 +1,16 @@
+import java.net.URI
+
+
 node {
     stage('Inspect') {
-        echo "Jenkins URL is ${env.JENKINS_URL}"
-        echo "This build URL is ${env.BUILD_URL}"
+        jenkinsURL = new URI(env.JENKINS_URL)
+        host = jenkinsURL.host
+
+        isProdution = host.contains('prod')
+        if (isProduction) {
+            echo 'This Jenkins is for PRODUCTION!'
+        } else {
+            echo "This Jenkins is @ ${jenkinsURL}"
+        }
     }
 }
