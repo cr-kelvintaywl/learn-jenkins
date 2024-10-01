@@ -11,6 +11,9 @@ node {
     stage('verify') {
         sh "echo foobar value is ${params.foobar}"
         sh "echo fizzbuzz value is ${params.fizzbuzz}"
+
+        // set for caller (upstream) to process
+        env.for_upstream = [params.foobar, params.fizzbuzz]
     }
 }
 
