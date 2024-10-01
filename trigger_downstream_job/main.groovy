@@ -16,5 +16,9 @@ stage('Trigger Downstream Job') {
 node {
     stage('Additional Processing') {
         echo "Accessing downstream job result in node: ${downstreamJobResult.result}"
+        echo 'Accessing downstream job build vars in node...'
+
+        echo "downstream job env.foobar = ${downstreamJobResult.buildVariables.foobar}"
+        echo "downstream job env.fizzbuzz = ${downstreamJobResult.buildVariables.fizzbuzz}"
     }
 }
