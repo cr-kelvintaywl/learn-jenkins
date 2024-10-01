@@ -18,7 +18,6 @@ node {
         echo "Accessing downstream job result in node: ${downstreamJobResult.result}"
         echo 'Accessing downstream job build vars in node...'
 
-        echo "downstream job env.foobar = ${downstreamJobResult.buildVariables.foobar}"
-        echo "downstream job env.fizzbuzz = ${downstreamJobResult.buildVariables.fizzbuzz}"
+        echo "downstream job env.for_upstream = ${downstreamJobResult.buildVariables.for_upstream}"
     }
 }
