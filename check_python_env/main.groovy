@@ -4,11 +4,7 @@ node {
         parameters([
             string(
                 name: 'node',
-                description: 'which node to run Docker commands on',
-            ),
-            string(
-                name: 'image',
-                description: 'docker image to pull',
+                description: 'which node to run Python commands on',
             ),
             booleanParam(
                 name: 'reload_parameters',
