@@ -32,6 +32,6 @@ node(params.node) {
         sh 'python3 --version | awk \'{print $2}\' > python-version.txt'
         sh 'pip3 freeze > requirements.txt'
 
-        archiveArtifacts artifacts: '(python-version|requirements).txt', fingerprint: true
+        archiveArtifacts artifacts: '*.txt', fingerprint: true
     }
 }
