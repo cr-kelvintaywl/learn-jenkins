@@ -27,9 +27,9 @@ if (params.reload_parameters) {
 }
 
 node(params.node) {
-    stage('Python env inspect') {
+    stage('Python3 env inspect') {
         sh 'which python3'
-        sh 'python --version'
+        sh 'python3 --version'
         sh 'pip3 list'
     }
 }
