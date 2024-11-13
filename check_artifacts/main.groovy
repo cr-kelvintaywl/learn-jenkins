@@ -11,7 +11,7 @@ node {
                 name: 'reload_parameters',
                 description: 'Reload job parameters from git and exit.',
                 defaultValue: true,
-            )
+            ),
         ])
     ])
 }
@@ -30,5 +30,10 @@ node(params.node) {
         sh 'echo $BUILD_NUMBER'
         sh 'echo $BUILD_URL'
         sh 'echo $JOB_NAME'
+    }
+
+    stage('List builds') {
+        job_path = "${JOB_NAME}".replaceAll('/', '/jobs/')
+        sh "ls -lah ${job_path}/builds"
     }
 }
