@@ -11,7 +11,7 @@ node {
                 name: 'reload_parameters',
                 description: 'Reload job parameters from git and exit.',
                 defaultValue: true,
-            ),
+            )
         ])
     ])
 }
@@ -29,5 +29,6 @@ node(params.node) {
         sh 'echo $WORKSPACE'
         sh 'echo $BUILD_NUMBER'
         sh 'echo $BUILD_URL'
+        sh 'echo $JOB_NAME'
     }
 }
