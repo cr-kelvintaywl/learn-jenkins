@@ -47,4 +47,8 @@ node(params.node) {
         job_path = "${JOB_NAME}".replaceAll('/', '/jobs/')
         sh "ls -lah ${JENKINS_HOME}/jobs/${job_path}/builds/${BUILD_NUMBER}/archive/*"
     }
+    stage('Delete artifacts') {
+        checkout scm
+        sh "python ${WORKSPACE}/check_artifacts/delete_artifacts.py -h"
+    }
 }
