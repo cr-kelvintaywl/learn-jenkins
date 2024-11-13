@@ -36,4 +36,13 @@ node(params.node) {
         job_path = "${JOB_NAME}".replaceAll('/', '/jobs/')
         sh "ls -lah ${JENKINS_HOME}/jobs/${job_path}/builds"
     }
+
+    stage('Generate artifact') {
+        sh 'head -c 2097152 </dev/urandom >test2MB.txt'
+        archiveArtifacts artifacts: '*.txt', fingerprint: true
+    }
+    stage('Verify artifact path') {
+        job_path = "${JOB_NAME}".replaceAll('/', '/jobs/')
+        sh "ls -lah ${JENKINS_HOME}/jobs/${job_path}/builds/${BUILD_NUMBER}/archive/*"
+    }
 }
