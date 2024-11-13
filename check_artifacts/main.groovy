@@ -34,6 +34,6 @@ node(params.node) {
 
     stage('List builds') {
         job_path = "${JOB_NAME}".replaceAll('/', '/jobs/')
-        sh "ls -lah ${job_path}/builds"
+        sh "ls -lah ${JENKINS_HOME}/jobs/${job_path}/builds"
     }
 }
