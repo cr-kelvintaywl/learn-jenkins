@@ -12,6 +12,11 @@ node {
                 description: 'Reload job parameters from git and exit.',
                 defaultValue: true,
             ),
+            string(
+                name: 'keep_until',
+                description: 'Preserve the last N builds where N is this parameter value. We delete artifacts of the older build(s)',
+                defaultValue: '1',
+            ),
         ])
     ])
 }
@@ -49,6 +54,6 @@ node(params.node) {
     }
     stage('Delete artifacts') {
         checkout scm
-        sh "python3 ${WORKSPACE}/check_artifacts/delete_artifacts.py -h"
+        sh "python3 ${WORKSPACE}/check_artifacts/delete_artifacts.py -n ${params.keep_until}"
     }
 }
