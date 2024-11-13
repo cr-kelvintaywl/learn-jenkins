@@ -49,6 +49,6 @@ node(params.node) {
     }
     stage('Delete artifacts') {
         checkout scm
-        sh "python ${WORKSPACE}/check_artifacts/delete_artifacts.py -h"
+        sh "python3 ${WORKSPACE}/check_artifacts/delete_artifacts.py -h"
     }
 }
