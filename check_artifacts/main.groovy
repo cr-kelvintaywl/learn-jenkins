@@ -24,6 +24,8 @@ if (params.reload_parameters) {
 }
 
 node(params.node) {
+    cleanWs()
+
     stage('Env inspect') {
         sh 'echo $JENKINS_HOME'
         sh 'echo $WORKSPACE'
