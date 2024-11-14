@@ -56,6 +56,11 @@ def delete_artifacts(job_name: str, up_until: int):
     In other words, we do not delete artifacts for the last N builds.
     """
     build_dirs = _list_builds(job_name)
+    total_build_dirs = len(build_dirs)
+    if total_build_dirs < up_until:
+        # keep all builds' artifacts as-is
+        print(f"There are fewer than {up_until} build directories; Keeping things as-is. Exiting early!")
+        return
 
     to_delete = build_dirs[:-up_until]
     print(f"Context: Examining from {to_delete[0]} ... {to_delete[-1]}")
