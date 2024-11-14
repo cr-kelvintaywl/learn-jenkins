@@ -20,7 +20,7 @@ node {
             string(
                 name: 'job_name',
                 description: 'Job name to target',
-                defaultValue: $JOB_NAME,
+                defaultValue: env.JOB_NAME,
             )
         ])
     ])
