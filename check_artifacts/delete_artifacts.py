@@ -1,31 +1,49 @@
-"""Deletes artifacts on the Jenkins node.
+"""Deletes artifacts on the current Jenkins node for a specific Jenkins job.
+
+This script assumes it will be run on the Jenkins node where your job's artifacts are stored.
+It will delete all builds' artifacts up to the most recent N builds.
+You can specify N via the -n or --until option flag.
 """
 
 from argparse import ArgumentParser
 import os
 import shutil
+from typing import List
 
 
 def _get_job_name_from_env() -> str:
+    # Jenkins injects the job name in the JOB_NAME env var.
     return os.environ["JOB_NAME"]
 
 
 def _get_job_build_dir(job_name: str):
-    jenkins_home = os.environ["JENKINS_HOME"]
+    # NOTE: when a job name is foo/bar/fizz,
+    # Jenkins store this jobs' build directory under the path: foo/jobs/bar/jobs/fizz
     job_name_in_path = job_name.replace("/", "/jobs/")
-    job_dir = os.path.join(jenkins_home, "jobs", job_name_in_path)
-    return os.path.join(job_dir, "builds")
+
+    job_dir_on_jenkins = os.path.join(
+        os.environ["JENKINS_HOME"],
+        "jobs",
+        job_name_in_path,
+    )
+    return os.path.join(job_dir_on_jenkins, "builds")
 
 
-def _list_builds(job_name: str):
+def _list_builds(job_name: str) -> List:
     build_dir = _get_job_build_dir(job_name)
-    print(build_dir)
     items = [
+        # full path
         os.path.join(build_dir, dir)
         for dir in os.listdir(build_dir)
     ]
 
-    dirs = list(filter(lambda d: os.path.isdir(d) and os.path.basename(d).isdigit(), items))
+    dirs = list(
+        filter(
+            # we only care about directories with digits as names
+            lambda d: os.path.isdir(d) and os.path.basename(d).isdigit(),
+            items
+        )
+    )
     # each dir's basename is the build number (integer)
     # so we want to sort by that build number as an integer, not string
     dirs.sort(key=lambda d: int(os.path.basename(d)))
@@ -70,8 +88,11 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
+
     N = args.until
+    assert N > 0, "Please specify a positive value (min: 1) for `until`"
+
     job_name = args.job_name or _get_job_name_from_env()
 
-    print(f"Preserving latest {N} builds...")
-    delete_artifacts(job_name, N)
+    print(f"Deleting artifacts for all builds up to latest {N} builds...")
+    delete_artifacts(job_name, up_until=N)
