@@ -17,6 +17,11 @@ node {
                 description: 'Preserve the last N builds where N is this parameter value. We delete artifacts of the older build(s)',
                 defaultValue: '1',
             ),
+            string(
+                name: 'job_name',
+                description: 'Job name to target',
+                defaultValue: $JOB_NAME,
+            )
         ])
     ])
 }
@@ -54,6 +59,6 @@ node(params.node) {
     }
     stage('Delete artifacts') {
         checkout scm
-        sh "python3 ${WORKSPACE}/check_artifacts/delete_artifacts.py -n ${params.keep_until}"
+        sh "python3 ${WORKSPACE}/check_artifacts/delete_artifacts.py --job_name ${params.job_name} -n ${params.keep_until}"
     }
 }
