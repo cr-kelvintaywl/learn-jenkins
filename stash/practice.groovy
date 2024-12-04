@@ -9,7 +9,7 @@ node {
         sh('cat dummy.txt')
     }
     stage('Modify') {
-        sh('echo goodbye > dummy.txt')
+        sh('echo goodbye >> dummy.txt')
         sh('cat dummy.txt')
     }
     stage('Unstash') {
