@@ -10,6 +10,18 @@ node {
                 name: 'ip',
                 description: 'ip or address to telnet',
             ),
+            string(
+              name: 'user',
+              description: 'user to log in as'
+            ),
+            string(
+              name: 'keypath',
+              description: 'path to SSH key'
+            ),
+            string(
+              name: 'cmd',
+              description: 'command to run remotely'
+            ),
             booleanParam(
                 name: 'reload_parameters',
                 description: 'Reload job parameters from git and exit.',
@@ -28,7 +40,6 @@ if (params.reload_parameters) {
 
 node(params.node) {
     stage('Inspect') {
-        sh "dig ${params.ip}"
-        sh 'ls ~/.ssh/'
+        sh "ssh -i ${params.keypath} -o StrictHostChecking=no ${params.user}@${params.ip} ${params.cmd}"
     }
 }
