@@ -44,16 +44,11 @@ if (params.reload_parameters) {
 
 node(params.keyholder_node) {
     stage('Copy SSH Key from node') {
+        sh "cp ${params.keypath} the_key"
         stash(
             name: 'ssh_key',
-            includes: "${params.keypath}",
+            includes: 'the_key',
         )
-        // set key file name as env var
-        ssh_key_filename = sh(
-            script: "basename ${params.keypath}",
-            returnStdout: true
-        ).trim()
-        env.ssh_key_filename = ssh_key_filename
     }
 }
 
@@ -63,6 +58,6 @@ node(params.node) {
 
     stage('Inspect') {
         unstash 'ssh_key'
-        sh "ssh -i ./${env.ssh_key_filename} -o StrictHostKeyChecking=no ${params.user}@${params.ip} ${params.cmd}"
+        sh "ssh -i ./the_key -o StrictHostKeyChecking=no ${params.user}@${params.ip} ${params.cmd}"
     }
 }
