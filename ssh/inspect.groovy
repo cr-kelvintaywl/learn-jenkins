@@ -7,6 +7,10 @@ node {
                 description: 'which node to run Docker commands on',
             ),
             string(
+                name: 'keyholder_node',
+                description: 'which node to copy key from',
+            ),
+            string(
                 name: 'ip',
                 description: 'ip or address to telnet',
             ),
@@ -16,7 +20,7 @@ node {
             ),
             string(
               name: 'keypath',
-              description: 'path to SSH key'
+              description: 'path to SSH key in keyholder_node to copy from'
             ),
             string(
               name: 'cmd',
@@ -38,8 +42,27 @@ if (params.reload_parameters) {
     return
 }
 
+node(params.keyholder_node) {
+    stage('Copy SSH Key from node') {
+        stash(
+            name: 'ssh_key',
+            includes: "${params.keypath}",
+        )
+        // set key file name as env var
+        ssh_key_filename = sh(
+            script: "basename ${params.keypath}",
+            returnStdout: true
+        ).trim()
+        env.ssh_key_filename = ssh_key_filename
+    }
+}
+
 node(params.node) {
+    // clean workspace after pipeline, so we remove the copied SSH key
+    cleanWs()
+
     stage('Inspect') {
-        sh "ssh -i ${params.keypath} -o StrictHostKeyChecking=no ${params.user}@${params.ip} ${params.cmd}"
+        unstash 'ssh_key'
+        sh "ssh -i ./${env.ssh_key_filename} -o StrictHostKeyChecking=no ${params.user}@${params.ip} ${params.cmd}"
     }
 }
