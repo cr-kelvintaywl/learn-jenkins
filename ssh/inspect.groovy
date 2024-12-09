@@ -40,6 +40,6 @@ if (params.reload_parameters) {
 
 node(params.node) {
     stage('Inspect') {
-        sh "ssh -i ${params.keypath} -o StrictHostChecking=no ${params.user}@${params.ip} ${params.cmd}"
+        sh "ssh -i ${params.keypath} -o StrictHostKeyChecking=no ${params.user}@${params.ip} ${params.cmd}"
     }
 }
