@@ -45,7 +45,6 @@ if (params.reload_parameters) {
 node(params.keyholder_node) {
     cleanWs()
     stage('Copy SSH Key from node') {
-        sh 'rm -f the_key'
         sh "cp ${params.keypath} the_key"
         stash(
             name: 'ssh_key',
