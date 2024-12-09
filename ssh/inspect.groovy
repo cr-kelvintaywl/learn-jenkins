@@ -28,7 +28,7 @@ if (params.reload_parameters) {
 
 node(params.node) {
     stage('Inspect') {
-        sh "telnet ${params.ip}"
+        sh "dig ${params.ip}"
         sh 'ls ~/.ssh/'
     }
 }
