@@ -39,6 +39,9 @@ if (params.reload_parameters) {
 }
 
 node(params.node) {
+    stage('Env') {
+        sh "env"
+    }
     stage('Inspect') {
         sh "ssh -i ${params.keypath} -o StrictHostKeyChecking=no ${params.user}@${params.ip} ${params.cmd}"
     }
