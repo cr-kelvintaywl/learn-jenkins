@@ -22,6 +22,10 @@ node {
               name: 'cmd',
               description: 'command to run remotely'
             ),
+            string(
+              name: 'inspect_node_command',
+              description: 'command to run on node for inspection purposes. E.g., whoami'
+            ),
             booleanParam(
                 name: 'reload_parameters',
                 description: 'Reload job parameters from git and exit.',
@@ -40,7 +44,7 @@ if (params.reload_parameters) {
 
 node(params.node) {
     stage('Env') {
-        sh "env"
+        sh "${params.inspect_node_command}"
     }
     stage('Inspect') {
         sh "ssh -i ${params.keypath} -o StrictHostKeyChecking=no ${params.user}@${params.ip} ${params.cmd}"
