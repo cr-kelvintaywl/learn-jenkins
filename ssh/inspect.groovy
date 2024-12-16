@@ -29,7 +29,7 @@ if (params.reload_parameters) {
 node(params.node) {
     cleanWs()
     stage('Inspect SSH Key from node') {
-        sh "head -c 50 ${params.keypath}"
-        sh "md5 ${params.keypath} || echo 'no md5'"
+        sh "head -c 100 ${params.keypath}"
+        sh "md5sum ${params.keypath} || echo 'no md5sum'"
     }
 }
