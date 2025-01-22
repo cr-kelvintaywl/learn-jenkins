@@ -31,6 +31,6 @@ node(params.node) {
     stage('Inspect disk space') {
         sh('df -ha')
         paths = params.paths.split(',').join(' ')
-        sh("du -sh ${paths}")
+        sh("du -h ${paths}")
     }
 }
