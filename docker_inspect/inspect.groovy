@@ -34,6 +34,7 @@ if (params.reload_parameters) {
 node(params.node) {
     stage('Docker inspect') {
         sh 'docker info'
+        sh 'docker system df'
         sh 'which jq'
         sh 'jq . /etc/docker/daemon.json || echo "cannot find daemon config JSON"'
         sh 'jq . ~/.docker/config.json || echo "cannot find CLI config JSON"'
