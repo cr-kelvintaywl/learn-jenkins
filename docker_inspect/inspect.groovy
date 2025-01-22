@@ -11,6 +11,11 @@ node {
                 description: 'docker image to pull',
             ),
             booleanParam(
+                name: 'save_image',
+                description: 'Save image as tar (artifact)',
+                defaultValue: true,
+            ),
+            booleanParam(
                 name: 'reload_parameters',
                 description: 'Reload job parameters from git and exit.',
                 defaultValue: true,
@@ -36,5 +41,9 @@ node(params.node) {
     stage('Docker pull') {
         sh "docker pull ${params.image}"
         sh 'docker image ls'
+        if (params.save_image) {
+            sh "docker save --output docker_image.tar ${params.image}"
+            archiveArtifacts(artifacts: 'docker_image.tar')
+        }
     }
 }
