@@ -6,15 +6,6 @@ node {
                 name: 'node',
                 description: 'which node to run on',
             ),
-            string(
-                name: 'seconds',
-                description: 'how long to wait (in seconds) before running task',
-            ),
-            string(
-                name: 'filepath',
-                description: 'name of file to store file',
-                defaultValue: 'concurrency_conflict'
-            ),
             booleanParam(
                 name: 'reload_parameters',
                 description: 'Reload job parameters from git and exit.',
