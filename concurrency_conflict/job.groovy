@@ -33,6 +33,7 @@ if (params.reload_parameters) {
 
 node(params.node) {
     cleanWs()
+    println("current workspace is ${env.WORKSPACE}")
     stage('Create File') {
         sh "echo '${env.BUILD_NUMBER}' >> /tmp/${params.filepath}"
         sh "cat /tmp/${params.filepath}"
