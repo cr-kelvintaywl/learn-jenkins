@@ -34,15 +34,22 @@ if (params.reload_parameters) {
 node(params.node) {
     cleanWs()
     stage('Create File') {
-        sh "echo '${env.BUILD_NUMBER}' >> /tmp/${filepath}"
-        sh "cat /tmp/${params.folder}"
+        sh "echo '${env.BUILD_NUMBER}' >> /tmp/${params.filepath}"
+        sh "cat /tmp/${params.filepath}"
     }
     stage('Sleep') {
         int sleepSecs = params.seconds as Integer
         sleep(sleepSecs)
     }
     stage('Use file') {
-        sh "stat /tmp/${filepath}"
-        sh "cat /tmp/${filepath}"
+        try {
+            sh "stat /tmp/${params.filepath}"
+            sh "cat /tmp/${params.filepath}"
+        } catch (ex) {
+            println("Error: ${ex}")
+            currentBuild.result = 'UNSTABLE'
+        } finally {
+            sh "rm -rf /tmp/${params.filepath}"
+        }
     }
 }
