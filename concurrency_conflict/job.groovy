@@ -33,7 +33,12 @@ if (params.reload_parameters) {
 
 node(params.node) {
     cleanWs()
-    println("current workspace is ${env.WORKSPACE}")
+    stage('Debug - Check workspace') {
+        // NOTE: this is me trying to investigate how we can use workspaces
+        // to avoid concurrent jobs modifying the same file(s)
+        sh "echo 'workspace is ${env.WORKSPACE}'"
+        sh 'pwd'
+    }
     stage('Create File') {
         sh "echo '${env.BUILD_NUMBER}' >> /tmp/${params.filepath}"
         sh "cat /tmp/${params.filepath}"
