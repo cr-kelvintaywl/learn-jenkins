@@ -28,6 +28,7 @@ node(params.node) {
         cleanWs()
         stage('Debug - Check workspace') {
             sh 'pwd'
+            sh "echo \"workspace is ${env.WORKSPACE}\""
 
             sh 'echo hello > hello.txt'
             sh 'stat hello.txt'
